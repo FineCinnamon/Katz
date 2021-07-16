@@ -8,11 +8,11 @@ apply from: "$DOC_CREATION"
 apply from: "$PUBLICATION"
 
 dependencies {
-    compile project(":arrow-fx-coroutines")
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$KOTLIN_VERSION"
+    implementation project(":arrow-fx-coroutines")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$KOTLIN_VERSION"
 
-    compile "org.jetbrains.kotlin:kotlin-compiler:$KOTLIN_VERSION"
-    compile "org.jetbrains.kotlin:kotlin-script-util:$KOTLIN_VERSION"
-    runtime "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN_VERSION"
-    runtime "org.jetbrains.kotlin:kotlin-scripting-compiler:$KOTLIN_VERSION"
+    implementation "org.jetbrains.kotlin:kotlin-compiler:$KOTLIN_VERSION"
+    implementation "org.jetbrains.kotlin:kotlin-script-util:$KOTLIN_VERSION"
+    runtimeOnly "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN_VERSION"
+    runtimeOnly "org.jetbrains.kotlin:kotlin-scripting-compiler:$KOTLIN_VERSION"
 }
