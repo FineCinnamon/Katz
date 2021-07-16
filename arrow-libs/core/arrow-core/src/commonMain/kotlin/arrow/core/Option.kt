@@ -338,13 +338,36 @@ public sealed class Option<out A> {
     public operator fun <A> invoke(a: A): Option<A> = Some(a)
 
     @JvmStatic
-    @JvmName("tryCatch")
+    @JvmName("tryCatchOrSideEffect")
+    @Deprecated(
+      "Side-effecting recover which loses Throwable is no longer supported",
+      ReplaceWith("Option.catch({ recover(it); None }, f)")
+    )
     public inline fun <A> catch(recover: (Throwable) -> Unit, f: () -> A): Option<A> =
       try {
         Some(f())
       } catch (t: Throwable) {
         recover(t.nonFatalOrThrow())
         None
+      }
+
+    @JvmStatic
+    @JvmName("tryCatchOrNone")
+    /**
+     * Ignores exceptions and returns None if one is thrown
+     */
+    public inline fun <A> catch(f: () -> A): Option<A> {
+      val recover: (Throwable) -> Option<A> = { None }
+      return catch(recover, f)
+    }
+
+    @JvmStatic
+    @JvmName("tryCatch")
+    public inline fun <A> catch(recover: (Throwable) -> Option<A>, f: () -> A): Option<A> =
+      try {
+        Some(f())
+      } catch (t: Throwable) {
+        recover(t.nonFatalOrThrow())
       }
 
     @JvmStatic

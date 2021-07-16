@@ -365,6 +365,27 @@ class OptionTest : UnitSpec() {
         option.map { it.valid() }.sequenceValidated() shouldBe option.traverseValidated { it.valid() }
       }
     }
+
+    "catch should return Some(result) when f does not throw" {
+      val recover: (Throwable) -> Option<Int> = { _ -> None}
+      Option.catch(recover) { 1 } shouldBe Some(1)
+    }
+
+    "catch should return Some(recoverValue) when f throws" {
+      val exception = Exception("Boom!")
+      val recoverValue = 10
+      val recover: (Throwable) -> Option<Int> = { _ -> Some(recoverValue) }
+      Option.catch(recover) { throw exception } shouldBe Some(recoverValue)
+    }
+
+    "catch should return Some(result) when f does not throw" {
+      Option.catch { 1 } shouldBe Some(1)
+    }
+
+    "catch should return None when f throws" {
+      val exception = Exception("Boom!")
+      Option.catch { throw exception } shouldBe None
+    }
   }
 }
 
